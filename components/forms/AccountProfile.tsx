@@ -20,6 +20,8 @@ import { ChangeEvent, useState } from "react";
 import '@/app/globals.css'
 import { isBase64Image } from "@/lib/utils";
 import { useUploadThing } from "@/lib/uploadthing";
+import { updateUser } from "@/lib/actions/user.actions";
+import { usePathname,useRouter } from "next/navigation";
 
 interface Props{
     user: {
@@ -36,6 +38,8 @@ const AccountPorfile = ({ user, btnTitle }: Props) => {
   {/* array of files */ }
   const [files, setFiles] = useState<File[]>([]);
   const { startUpload } = useUploadThing("media");
+  const router = useRouter();
+  const pathname = usePathname();
     
     const form = useForm({
         resolver: zodResolver(UserValidation),
@@ -51,16 +55,18 @@ const AccountPorfile = ({ user, btnTitle }: Props) => {
   {/*event object type expected to be an input element of html*/}
   const handleImage = (e: ChangeEvent<HTMLInputElement> , fieldChange:(value:string)=>void) => {
     e.preventDefault();
-    {/*object which deals with files and bolb*/}
+    {/*object which deals with files and bolb*/ }
     const fileReader = new FileReader();
     {/*object which deals with files and bolb*/ }
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
       setFiles(Array.from(e.target.files));
+
       if (!file.type.includes('image')) return;
-      {/*event object type expected to be an input element of html*/}
+      {/* The onload event will fire when the loading is suucessful */}
       fileReader.onload =async (event) => {
         const imageDataUrl = event.target?.result?.toString() || '';
+
         fieldChange(imageDataUrl)
       }
       fileReader.readAsDataURL(file);
@@ -68,15 +74,36 @@ const AccountPorfile = ({ user, btnTitle }: Props) => {
   }
 
 
+ {/* the z.infer<> is used with the zod library to infer the type from userValidation */}
   const onSubmit = async (values: z.infer<typeof UserValidation>) =>{
     const blob = values.profile_photo;
     const hasImageChnaged = isBase64Image(blob);
+    console.log("this is this values ", values);
+
+    {/* Here is am just checking if the default third party login profile have been change or not */}
     if (hasImageChnaged) {
+      console.log("this is this values ", values);
       const imgRes = await startUpload(files);
       if (imgRes && imgRes[0].fileUrl) {
         values.profile_photo = imgRes[0].fileUrl
       }
     }
+
+    await updateUser({
+      userId: user.id,
+      username: values.username,
+      name: values.name,
+      bio: values.bio,
+      image: values.profile_photo,
+      path: pathname
+    })
+
+    if (pathname === '/profile/edit') {
+    router.back();
+    } else {
+    router.push('/')
+    }
+
     }
 
 
@@ -120,6 +147,7 @@ const AccountPorfile = ({ user, btnTitle }: Props) => {
                   onChange={(e) => handleImage(e, field.onChange)}
                 />
               </FormControl>
+              <FormMessage/>
             </FormItem>
           )}
         />
