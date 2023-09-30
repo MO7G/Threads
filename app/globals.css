@@ -35,6 +35,12 @@
   /* thread card  */
   .thread-card_bar {
     @apply relative mt-2 w-0.5 grow rounded-full bg-neutral-800;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .thread-card_bar:hover {
+  background-color: white; /* Change to your desired hover color */
   }
 
   /* User card */

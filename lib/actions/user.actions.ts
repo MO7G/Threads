@@ -45,7 +45,6 @@ export async function updateUser(
         revalidatePath(path);
         } 
         
-        console.log("the insertion is done i believe")
     } catch (error:any) {
         throw new Error(`Faild to create/update user: ${error.message}`)
     }

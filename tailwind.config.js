@@ -188,6 +188,7 @@ module.exports = {
         "light-4": "#5C5C7B",
         "gray-1": "#697C89",
         glassmorphism: "rgba(16, 16, 18, 0.60)",
+        white: "#000000"
       },
       boxShadow: {
         "count-badge": "0px 0px 6px 2px rgba(219, 188, 159, 0.30)",
