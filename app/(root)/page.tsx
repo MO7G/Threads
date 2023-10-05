@@ -4,9 +4,10 @@ import Thread from "@/lib/models/thread.model";
 import { currentUser } from "@clerk/nextjs";
 import { UserButton } from "@clerk/nextjs";
 import "../../lib/intialize";
+import { GetCurrentUser } from "@/utils/userUtils";
 
 export default async function Home() {
-  const user = await currentUser();
+  const user = GetCurrentUser(currentUser);
   const result = await fetchPosts();
   return (
     <>

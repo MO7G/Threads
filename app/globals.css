@@ -165,3 +165,18 @@
 .comment-form_btn {
   @apply rounded-3xl bg-primary-500 px-8 py-2 !text-small-regular text-light-1 max-xs:w-full !important;
 }
+
+.hoverEffect:hover img {
+  filter: brightness(4.2); /* Adjust brightness to make it appear as if the color has changed */
+}
+
+.spinner-inside-button {
+  display: inline-block;
+  vertical-align: middle; /* Align vertically in the middle of the button */
+  margin-right: 8px; /* Add some spacing between the spinner and text */
+}
+
+.keep-colors-disabled {
+  opacity: 1 !important; /* Ensure opacity remains at 1 (fully visible) */
+  pointer-events: auto !important; /* Allow pointer events on the button */
+}

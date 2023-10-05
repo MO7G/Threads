@@ -20,6 +20,7 @@ import { Input } from "../ui/input";
 import Image from "next/image";
 import { useState } from "react";
 import usePreventMultipleSubmit from "../ui/preventMultipleSubmit";
+import { ThreeDots } from "react-loader-spinner";
 
 interface Props {
   threadId: string;
@@ -41,9 +42,8 @@ const Comment = ({ threadId, currentUserImg, currentUserId }: Props) => {
   const onInvalid = (errors: any) => console.error(errors);
 
   const onSubmit = async (values: z.infer<typeof ThreadValidation>) => {
-    console.log("I am called");
-    // Use preventMultipleSubmit to handle form submission
     await preventMultipleSubmit(async () => {
+      console.log();
       try {
         await addCommentToThread({
           threadId: threadId,
@@ -51,10 +51,8 @@ const Comment = ({ threadId, currentUserImg, currentUserId }: Props) => {
           userId: JSON.parse(currentUserId),
           path: pathname,
         });
-        form.reset();
-        // router.push("/");
       } catch (error: any) {
-        Error(error);
+        throw new Error("error here ", error.message);
       }
     });
   };
@@ -90,8 +88,8 @@ const Comment = ({ threadId, currentUserImg, currentUserId }: Props) => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="comment-form_btn">
-          Reply
+        <Button type="submit" className={`comment-form_btn`}>
+          replay
         </Button>
       </form>
     </Form>

@@ -140,8 +140,7 @@ export async function addCommentToThread({ threadId, commentText, userId, path }
         revalidatePath(path);
 
     } catch (error:any) {
-                throw new Error(`problem with adding a thread comment ${error}`)
+    return { success: false, message: `Problem with adding a thread comment: ${error.message}` };
 
     }
-    console.log(threadId,commentText,userId,path)
 }

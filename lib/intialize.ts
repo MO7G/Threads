@@ -1,3 +1,5 @@
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 import { connectToDB } from "./mongoose";
 connectToDB();
+//mongoose.connection.collections.threads.drop()
+    

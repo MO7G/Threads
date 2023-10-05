@@ -5,5 +5,5 @@ export const ThreadValidation = z.object({
 })
 
 export const CommentValidation = z.object({
-    thread: z.string().max(200),
+    thread: z.string().max(10),
 })

@@ -58,7 +58,7 @@ const ThreadCard = ({
 
           <div className="flex w-full flex-col">
             <Link href={`/profile/${author.id}`} className="w-fit">
-              <h4 className="cursor-pointer text-base-semibold text-light-1">
+              <h4 className="cursor-pointer text-base-semibold text-light-1 ">
                 {author.name}
               </h4>
             </Link>
@@ -67,36 +67,47 @@ const ThreadCard = ({
 
             <div className={`${isComment && "mb-10"} mt-5 flex flex-col gap-3`}>
               <div className="flex gap-3.5">
-                <Image
-                  src="/assets/heart-gray.svg"
-                  alt="heart"
-                  width={24}
-                  height={24}
-                  className="cursor-pointer object-contain"
-                />
-                <Link href={`/thread/${id}`}>
+                <div className="hoverEffect">
                   <Image
-                    src="/assets/reply.svg"
+                    src="/assets/heart-gray.svg"
                     alt="heart"
                     width={24}
                     height={24}
                     className="cursor-pointer object-contain"
                   />
-                </Link>
-                <Image
-                  src="/assets/repost.svg"
-                  alt="heart"
-                  width={24}
-                  height={24}
-                  className="cursor-pointer object-contain"
-                />
-                <Image
-                  src="/assets/share.svg"
-                  alt="heart"
-                  width={24}
-                  height={24}
-                  className="cursor-pointer object-contain"
-                />
+                </div>
+
+                <div className="hoverEffect">
+                  <Link href={`/thread/${id}`}>
+                    <Image
+                      src="/assets/reply.svg"
+                      alt="heart"
+                      width={24}
+                      height={24}
+                      className="cursor-pointer object-contain"
+                    />
+                  </Link>
+                </div>
+
+                <div className="hoverEffect">
+                  <Image
+                    src="/assets/repost.svg"
+                    alt="heart"
+                    width={24}
+                    height={24}
+                    className="cursor-pointer object-contain"
+                  />
+                </div>
+
+                <div className="hoverEffect">
+                  <Image
+                    src="/assets/share.svg"
+                    alt="heart"
+                    width={24}
+                    height={24}
+                    className="cursor-pointer object-contain"
+                  />
+                </div>
               </div>
             </div>
           </div>
