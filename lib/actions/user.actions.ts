@@ -5,7 +5,10 @@ import { revalidatePath } from "next/cache";
 import Thread from "../models/thread.model";
 import { FilterQuery, SortOrder } from "mongoose";
 import { exec } from "child_process";
-
+import { ChevronDownSquareIcon } from "lucide-react";
+import { format } from "@/utils/errorDisplayer";
+import { Children } from "react";
+import { Elsie_Swash_Caps } from "next/font/google";
 interface Parms {
   userId: string;
   username: string;
@@ -94,7 +97,7 @@ export async function fetchUserPosts(userId: string) {
 
 export async function fetchUsers({
   userId,
-  searchString = "",
+  searchString,
   pageNumber = 1,
   pageSize = 20,
   sortBy = "desc",
@@ -108,16 +111,19 @@ export async function fetchUsers({
   try {
     connectToDB();
 
+    if (searchString.trim() === "") {
+      // If searchString is empty, return an empty result.
+      return { users: [], isNext: false };
+    }
+
     const skipAmount = (pageNumber - 1) * pageSize;
     const regex = new RegExp(searchString, "i");
 
     const query: FilterQuery<typeof User> = { id: { $ne: userId } };
-    if (searchString.trim() !== "") {
-      query.$or = [
-        { username: { $regex: regex } },
-        { name: { $regex: regex } },
-      ];
-    }
+    query.$or = [
+      { username: { $regex: regex } },
+      { name: { $regex: regex } },
+    ];
 
     const sortOptions = { createdAt: sortBy };
 
@@ -134,5 +140,34 @@ export async function fetchUsers({
     return { users, isNext };
   } catch (error: any) {
     throw new Error(`Failed to fetch users ${error.message}`);
+  }
+}
+
+
+export async function getActivity(userId: string) {
+  try {
+    connectToDB();
+    // find all threads created by the user
+    const userThreads = await Thread.find({ author: userId });
+
+    // collect all the child thread ids ( replies ) from the "children"
+    const childThreadIds = userThreads.reduce((acc, userThreads) => {
+      return acc.concat(userThreads.children); // Use optional chaining to safely access children
+    }, []);
+
+    format("from the actions " , childThreadIds);
+
+    const replies = await Thread.find({
+      _id: { $in: childThreadIds },
+      author: { $ne: userId },
+    }).populate({
+      path: "author",
+      model: User,
+      select: "name image _id",
+    });
+
+    return replies;
+  } catch (error: any) {
+    throw new Error(`Failed to fetch activity ${error.message}`);
   }
 }

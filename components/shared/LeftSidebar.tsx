@@ -30,7 +30,6 @@ function LeftSidebar() {
             link.route = `${link.route}${userId}`;
           }
 
-          console.log("Link Route:", link.route);
 
           return (
             <Link

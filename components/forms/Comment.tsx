@@ -51,6 +51,7 @@ const Comment = ({ threadId, currentUserImg, currentUserId }: Props) => {
           userId: JSON.parse(currentUserId),
           path: pathname,
         });
+        form.reset();
       } catch (error: any) {
         throw new Error("error here ", error.message);
       }
